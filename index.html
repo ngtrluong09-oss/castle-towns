@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>城下町アトラス · Castle town explorer — castle to station distances in Japan</title>
+<meta name="description" content="How far is each Japanese castle from its town's main train station? 223 castle and jinya towns, straight-line distances, 2020 census population, area and density, with a source link on every value.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231C3A52%22/%3E%3Ccircle cx=%228%22 cy=%228%22 r=%222.5%22 fill=%22%23C9A227%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner">
+  <div>Castle town explorer · data v2 (2026-11-14)</div>
+  <div class="sub" id="bannerSub">Straight-line distances · every value links to its source</div>
+</div>
+
+<header class="top">
+  <div class="brand">
+    <h1>城下町アトラス</h1>
+    <div class="en">Castle town explorer</div>
+  </div>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Station">
+      <span class="seg-label">Station</span>
+      <button type="button" data-station="main" class="on" title="The town's principal JR or namesake station">Main (JR / namesake)</button>
+      <button type="button" data-station="central" title="The station nearest the castle inside the town (old-centre side)">Central (nearest old centre)</button>
+    </div>
+    <div class="seg" role="group" aria-label="X axis">
+      <span class="seg-label">X axis</span>
+      <button type="button" data-x="population_2020" class="on">Population</button>
+      <button type="button" data-x="density_per_km2_2020">Density</button>
+      <button type="button" data-x="area_km2_2020">Area</button>
+    </div>
+    <div class="seg" role="group" aria-label="Colour">
+      <span class="seg-label">Colour</span>
+      <button type="button" data-color="status" class="on">Castle status</button>
+      <button type="button" data-color="matsue">Compare to Matsue</button>
+    </div>
+    <div class="seg" role="group" aria-label="Compare metric" id="cmpGroup" hidden>
+      <span class="seg-label">vs Matsue</span>
+      <button type="button" data-cmp="pop" class="on">Population</button>
+      <button type="button" data-cmp="density">Density</button>
+      <button type="button" data-cmp="band">Band 0.5–1.5×</button>
+    </div>
+  </div>
+</header>
+
+<div class="filterbar">
+  <div class="chips" id="statusChips" aria-label="Castle status filter"></div>
+  <label class="check"><input type="checkbox" id="fFormer" checked> Merged former-town rows</label>
+  <select id="fPref" class="sel" aria-label="Prefecture"><option value="">All prefectures</option></select>
+  <input id="fSearch" class="sel search" type="search" placeholder="Search town, castle, station…" aria-label="Search">
+  <button type="button" id="resetBtn" class="linkbtn">Reset</button>
+</div>
+
+<main class="workspace">
+  <section class="panel chart" aria-label="Scatter chart">
+    <div class="chart-head">
+      <h2 id="chartTitle">Distance to main station × population</h2>
+      <div class="note" id="chartNote"></div>
+    </div>
+    <div id="chart" class="chart-box"></div>
+    <div class="legend" id="legend"></div>
+    <div class="norail" id="noRailNote"></div>
+    <div class="tip" id="tip" hidden></div>
+  </section>
+
+  <aside class="side">
+    <section class="panel summary" aria-label="Summary">
+      <div class="kicker">Current selection</div>
+      <div class="stats" id="summary"></div>
+      <div class="sumnote" id="sumNote"></div>
+    </section>
+    <section class="panel detail" id="detail" aria-label="Selected town"></section>
+  </aside>
+
+  <section class="panel table-wrap" aria-label="Table of towns">
+    <div class="table-head">
+      <strong id="tableTitle">Castle towns</strong>
+      <span id="tableNote">Click a column to sort · click a row for details · underlined values open their source</span>
+    </div>
+    <div class="table-scroll">
+      <table id="tbl">
+        <thead><tr id="thead"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<section class="panel method" id="method">
+  <h2>Sources &amp; method</h2>
+  <div class="method-grid">
+    <div>
+      <h3>What is measured</h3>
+      <p><b>Distance</b> is the straight-line (haversine, great-circle) distance in km from the castle reference point to the station's platform centroid. It is not walking or rail distance. A WGS84 ellipsoid (geodesic) value is in the data for cross-checking; the two agree within 0.6% on every row.</p>
+      <p><b>Main station</b>: the town's principal JR or namesake station. <b>Central station</b>: the heavy-rail, subway or monorail station nearest the castle inside the town (trams excluded), with manual picks for 本八戸, 東岡崎, 行田市, 上野市, 近鉄郡山, 水口城南, 松山市, 西鉄福岡（天神）, 膳所 and 東萩. In many towns the two are the same station.</p>
+      <p><b>Castle point</b>: Wikidata P625, Japanese Wikipedia GeoData, or OpenStreetMap (source on every row). Mountain castles (yamajiro) are measured from the honmaru / summit.</p>
+      <p><b>Population, area, density</b>: 2020 Population Census (令和2年国勢調査, e-Stat table 1-1) for the <i>current</i> municipality. Former-town figures are shown in the detail panel where the census has them (post-2000 mergers only).</p>
+      <p><b>Merged towns</b>: MLIT N03 boundaries (2000, 1950; 1920 for 長府 and 飫肥) identify castle towns later absorbed into another city. These <i>former-town rows</i> are measured to a station inside the old town; if it has none, the row is <i>no rail</i> and is listed but not plotted.</p>
+      <p><b>Compare to Matsue</b>: ratio of each town's population or density to Matsue's (203,616 people; 355.4 /km², 2020). The band mode uses the dataset rule: <i>both</i> = 0.5–1.5× Matsue on population and density.</p>
+      <p><b>Summary panel</b> numbers are recomputed in your browser for the current filter and station. Spearman ρ there has no confidence interval; the bootstrapped figures below come from <a href="data/stats_v2.json">stats_v2.json</a>.</p>
+      <h3>Headline statistics (full dataset)</h3>
+      <div id="headline"></div>
+    </div>
+    <div>
+      <h3>Data sources</h3>
+      <ul class="srclist" id="sources"></ul>
+      <h3>Download</h3>
+      <ul class="dl">
+        <li><a href="data/castle_towns.json" download>castle_towns.json</a> — the data this page uses, with all citation fields</li>
+        <li><a href="data/castle_towns_v2.csv" download>castle_towns_v2.csv</a> — 223 rows, original columns</li>
+        <li><a href="data/sources_v2.csv" download>sources_v2.csv</a> · <a href="data/stats_v2.json" download>stats_v2.json</a></li>
+      </ul>
+      <h3>Known limits and judgement calls</h3>
+      <ul class="limits">
+        <li>千代田区 (Edo Castle, ward-level statistics) and 京都市 (Nijō) are kept as special cases; 首里城 (a gusuku, not a jōkamachi) is kept and measured to Yui Rail 首里駅. They are flagged in each row.</li>
+        <li>Jinya (陣屋) cover about 19 of 100+ jinya han seats; 7 more have no coordinate yet and are not in the table.</li>
+        <li>Which station counts as "main" or "central" is a rule, not a fact; ridership was not checked.</li>
+        <li>Population for towns absorbed before 2000 is unknown at town level (not zero); charts use current-municipality figures.</li>
+        <li>Castle status defaults to ruins where the Wikipedia infobox has no tower field (flagged). About 93 castle points have only one coordinate source.</li>
+        <li>Festivals are a draft from Wikipedia city articles, unverified and not ranked; not researched for v2 additions.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">城下町アトラス · built from castle_towns_v2.csv (2026-11-14) · sources accessed 2026-11-14 · distances are straight-line, not travel distance</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
