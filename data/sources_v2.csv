@@ -1,0 +1,21 @@
+source,url,used_for,accessed
+Japanese Wikipedia: 城下町 (list 城下町の一覧),https://ja.wikipedia.org/wiki/%E5%9F%8E%E4%B8%8B%E7%94%BA,castle-town candidate list (188 entries),2026-11-14
+Wikidata: 日本100名城 Q1139439,https://www.wikidata.org/wiki/Q1139439,candidate castles (part of / list membership),2026-11-14
+Wikidata: 続日本100名城 Q30927700,https://www.wikidata.org/wiki/Q30927700,candidate castles,2026-11-14
+Wikidata: han (藩) Q841985 — capital / headquarters location,https://www.wikidata.org/wiki/Q841985,Edo-period han seats (castle) candidates,2026-11-14
+Wikidata Query Service,https://query.wikidata.org/,"castle & station coordinates (P625), labels, operators (P137), dissolution (P576), municipal codes (P429)",2026-11-14
+Japanese Wikipedia castle articles (infobox 日本の城郭概要表: tower_struct / remains),https://ja.wikipedia.org/,castle type (original / reconstructed / ruins); per-row URL in castle_type_source_url,2026-11-14
+Japanese Wikipedia municipality articles (祭事・催事 sections),https://ja.wikipedia.org/,draft festival names; per-row URL in festival_source_url,2026-11-14
+"2020 Population Census, 人口等基本集計 第1-1表 (e-Stat)",https://www.e-stat.go.jp/stat-search/files?layout=dataset&stat_infid=000032142402,"population, area (GSI 2020 area survey, reference) and density for every municipality; row in census_excel_row",2026-11-14
+GSI reverse geocoder (国土地理院 逆ジオコーダ),https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress,municipality of castle & station coordinates (location validation),2026-11-14
+OpenStreetMap Nominatim,https://nominatim.openstreetmap.org/,independent cross-check of castle coordinates; one coordinate replacement (Matsusaka),2026-11-14
+"Author's own comparable-cities screening table (private, not published)",,cross-check of population; central_core_type,2026-11-14
+"MLIT 国土数値情報 鉄道データ N02-2023 (stations, operators, lines)",https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-2023.html,"v2 station_main / station_central coordinates, operators, is_jr (replaces Wikidata station operators)",2026-11-14
+MLIT 国土数値情報 行政区域データ N03 (2000-10-01 boundaries),https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2024.html,former-municipality detection (post-2000 mergers) and former-town polygons,2026-11-14
+MLIT N03 (1950-10-01 boundaries),https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2024.html,former-municipality detection (pre-2000 absorbed castle towns),2026-11-14
+"MLIT N03 (1920-01-01 boundaries, 山口県/宮崎県 only used)",https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2024.html,長府町 (櫛崎城) and 飫肥町 (飫肥城) polygons,2026-11-14
+"e-Stat 2020 Census table 1-1, 旧市町村 rows",https://www.e-stat.go.jp/stat-search/files?layout=dataset&stat_infid=000032142402,former-municipality population/area (post-2000 mergers only),2026-11-14
+Japanese Wikipedia: 丸岡駅 / 鯖江駅 / 大聖寺駅 / 福井駅 / 敦賀駅 / 小松駅,https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%94%E3%83%A9%E3%82%A4%E3%83%B3%E3%81%B5%E3%81%8F%E3%81%84,operator override after the 2024-03-16 Hokuriku Main Line transfer (N02-2023 predates it),2026-11-14
+OpenStreetMap features (per-row URLs in castle_coord_source_url),https://www.openstreetmap.org/,"coordinates for 一関城, 亀田城, 矢島陣屋, 黒石陣屋, 鯖江陣屋; cross-checks for 豊岡城, 福島城, 沼津城",2026-11-14
+Japanese Wikipedia GeoData / infobox (per-row URLs),https://ja.wikipedia.org/w/api.php,coordinates for v2-added castles and jinya; castle_layout (struct field),2026-11-14
+Reviews: Nori / RT3 / Data,review_nori.md; review_rt3.md; review_data.md,every v2 correction (see changelog.md),2026-11-14
